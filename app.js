@@ -33,16 +33,18 @@ function checkForRedirect () {
 }
 
 function isThisARedirect (res) {
+        var currentDate = new Date();
 	if (res.statusCode == 301 || res.statusCode == 302) { 
-	  console.log("Redirect? HOW SUSPICIOUS.");
+	  console.log(currentDate.toTimeString()+": Redirect? HOW SUSPICIOUS.");
 		redirecting(res);
 	}
 	else {
-	  console.log("No redirect, nothing to see here...");
+	  console.log(currentDate.toTimeString()+": No redirect, nothing to see here...");
 	}
 }
 
 function redirecting (res) {
+        var currentDate = new Date();
 	var _url = url.parse(res.headers.location);
 	
 	console.log("Scrape: "+res.headers.location);
@@ -51,7 +53,7 @@ function redirecting (res) {
       var found = false;
       for (var k in hotspots) {
         if (!found && hotspots[k].check($)) {
-          console.log(k.toUpperCase()+" WANTS YOU TO LOG IN");
+          console.log(currentDate.toTimeString()+": "+k.toUpperCase()+" WANTS YOU TO LOG IN");
           connectToNetwork(hotspots[k].credentials, mergeObjects(_url, hotspots[k].postOptions));
           return;
         }
